@@ -1,11 +1,19 @@
 package com.Arrow.SplitWisedemo.Models;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.Arrow.SplitWisedemo.Enums.GroupTypeEnum;
 
@@ -17,22 +25,45 @@ public class Group {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private long id;
 
-	private long userId;
+	@Column(nullable = false,updatable = false)
+	private long createdBy;
 
+	@Column(nullable = false)
 	private String groupName;
 
 	@Enumerated
+	@Column(nullable = false)
 	private GroupTypeEnum type;
 
 	private boolean isSmplifyGroupDepts;
+	
+	@ManyToMany
+	private List<User> users;
+	
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+	
+	@UpdateTimestamp
+	private LocalDateTime updatedAt;
+	
+	private long updatedBy;
+	
+	public Group() {
+		
+	}
 
-	public Group(long id, long userId, String groupName, GroupTypeEnum type, boolean isSmplifyGroupDepts) {
+	public Group(long id, long createdBy, String groupName, GroupTypeEnum type, boolean isSmplifyGroupDepts,
+			List<User> users, LocalDateTime createdAt, LocalDateTime updatedAt, long updatedBy) {
 		super();
 		this.id = id;
-		this.userId = userId;
+		this.createdBy = createdBy;
 		this.groupName = groupName;
 		this.type = type;
 		this.isSmplifyGroupDepts = isSmplifyGroupDepts;
+		this.users = users;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.updatedBy = updatedBy;
 	}
 
 	public long getId() {
@@ -43,12 +74,12 @@ public class Group {
 		this.id = id;
 	}
 
-	public long getUserId() {
-		return userId;
+	public long getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setUserId(long userId) {
-		this.userId = userId;
+	public void setCreatedBy(long createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public String getGroupName() {
@@ -73,6 +104,38 @@ public class Group {
 
 	public void setSmplifyGroupDepts(boolean isSmplifyGroupDepts) {
 		this.isSmplifyGroupDepts = isSmplifyGroupDepts;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public long getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(long updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 }
